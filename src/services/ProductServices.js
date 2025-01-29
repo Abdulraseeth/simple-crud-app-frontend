@@ -5,14 +5,13 @@ class ProductService {
     return api.post("api/products", data);
   }
 
-  getProduct(){
-    return api.get("api/products")
-  }
-
   deleteProduct(id) {
     return api.delete(`api/products/${id}`);
   }
-  
+
+  getProduct(searchQuery = "") {
+    return api.get(`api/products`, { params: { search: searchQuery } });
+  }
 }
 
 export default new ProductService();

@@ -3,6 +3,7 @@ import productService from "../services/ProductServices";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -10,8 +11,7 @@ function ProductList() {
 
   const fetchProducts = async () => {
     try {
-      const response = await productService.getProduct();
-      console.log("All Products:", response.data);
+      const response = await productService.getProduct(searchQuery);
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching Products:", error);
@@ -31,8 +31,31 @@ function ProductList() {
     }
   };
 
+  const handleSearch = async () => {
+    fetchProducts();
+  };
+
   return (
     <div className="container mt-4">
+      <h1>Product List</h1>
+      <div className="mb-3">
+        <div className="row">
+          <div className="col-11">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="col-1">
+            <button className="btn btn-primary " onClick={handleSearch}>
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className="card shadow p-4"
         style={{ backgroundColor: "#f8f9fa", borderRadius: "12px" }}
