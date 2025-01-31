@@ -40,7 +40,7 @@ function ProductList() {
       <h1>Product List</h1>
       <div className="mb-3">
         <div className="row">
-          <div className="col-11">
+          <div className="col-12 col-md-11 col-sm-10 my-2">
             <input
               type="text"
               className="form-control"
@@ -49,7 +49,7 @@ function ProductList() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="col-1">
+          <div className="col-12 col-md-1 col-sm-1 my-2">
             <button className="btn btn-primary " onClick={handleSearch}>
               Search
             </button>
