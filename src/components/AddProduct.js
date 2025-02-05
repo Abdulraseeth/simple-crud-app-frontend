@@ -8,6 +8,7 @@ function AddProduct() {
     description: "",
     price: "",
     image: "",
+    category: "",
   });
 
   const [error, setError] = useState("");
@@ -43,7 +44,7 @@ function AddProduct() {
 
     // Validation (optional)
     if (!product.name || !product.price) {
-      setError("Name and Price are required fields.");
+      setError("Name , Price and Category  are required fields.");
       return;
     }
 
@@ -96,6 +97,27 @@ function AddProduct() {
                         value={product.description}
                         onChange={handleChange}
                       ></textarea>
+                    </div>
+
+                    {/* Category Dropdown */}
+                    <div className="mb-3">
+                      <label htmlFor="category" className="form-label">
+                        Category
+                      </label>
+                      <select
+                        className="form-select"
+                        id="category"
+                        name="category"
+                        value={product.category}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select Category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="furniture">Furniture</option>
+                        <option value="other">Other</option>
+                      </select>
                     </div>
                   </div>
 

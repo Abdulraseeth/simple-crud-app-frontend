@@ -9,8 +9,10 @@ class ProductService {
     return api.delete(`api/products/${id}`);
   }
 
-  getProduct(searchQuery = "") {
-    return api.get(`api/products`, { params: { search: searchQuery } });
+  getProduct(searchQuery = "", category = "", priceRange = "") {
+    return api.get(`api/products`, {
+      params: { search: searchQuery, category, price: priceRange },
+    });
   }
 }
 

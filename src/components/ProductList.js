@@ -4,14 +4,20 @@ import productService from "../services/ProductServices";
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState(""); // Filter by category
+  const [priceRange, setPriceRange] = useState(""); // Filter by price
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [searchQuery, category, priceRange]);
 
   const fetchProducts = async () => {
     try {
-      const response = await productService.getProduct(searchQuery);
+      const response = await productService.getProduct(
+        searchQuery,
+        category,
+        priceRange
+      );
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching Products:", error);
@@ -31,31 +37,55 @@ function ProductList() {
     }
   };
 
-  const handleSearch = async () => {
-    fetchProducts();
-  };
+  // const handleSearch = async () => {
+  //   fetchProducts();
+  // };
 
   return (
     <div className="container mt-4">
       <h1>Product List</h1>
+
+      {/* search and filter */}
       <div className="mb-3">
-        <div className="row">
-          <div className="col-12 col-md-11 col-sm-10 my-2">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+        <div class="d-flex">
+          <input
+            class="form-control me-2"
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <div className="col-md-2 me-2">
+            <select
+              className="form-select"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              <option value="electronics">Electronics</option>
+              <option value="clothing">Clothing</option>
+              <option value="furniture">Furniture</option>
+            </select>
           </div>
-          <div className="col-12 col-md-1 col-sm-1 my-2">
-            <button className="btn btn-primary " onClick={handleSearch}>
-              Search
-            </button>
+          <div className="col-md-2 me-2">
+            <select
+              className="form-select"
+              value={priceRange}
+              onChange={(e) => setPriceRange(e.target.value)}
+            >
+              <option value="">All Prices</option>
+              <option value="0-50">Under $50</option>
+              <option value="50-100">$50 - $100</option>
+              <option value="100-500">$100 - $500</option>
+            </select>
           </div>
+          {/* <button class="btn btn-primary" onClick={handleSearch}>
+            Search
+          </button> */}
         </div>
       </div>
+
       <div
         className="card shadow p-4"
         style={{ backgroundColor: "#f8f9fa", borderRadius: "12px" }}
@@ -79,12 +109,19 @@ function ProductList() {
                   />
                   <div className="card-body d-flex flex-column">
                     <h5 className="card-title">{product.name}</h5>
+
+                    {/* Category Badge */}
+                    <span className="badge bg-info mb-2">
+                      {product.category || "No Category"}
+                    </span>
+
                     <p className="card-text text-muted">
                       {product.description || "No description available"}
                     </p>
                     <p className="card-text fw-bold text-primary">
                       ${product.price}
                     </p>
+
                     <button
                       className="btn btn-danger mt-auto"
                       onClick={() => handleDelete(product._id)}
